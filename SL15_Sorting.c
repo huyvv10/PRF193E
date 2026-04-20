@@ -54,6 +54,43 @@ int countFrequency(int a[], int n, int x){
 		if (a[i]==x) count++;
 	return count;	
 }
+
+int getMax(int a[], int n){
+	int i, max=a[0];
+	for (i=1; i<n; i++)
+		if (a[i] > max) max = a[i];
+	return max;	
+}
+
+int getMin(int a[], int n){
+	int i, min=a[0];
+	for (i=1; i<n; i++)
+		if (a[i] < min) min = a[i];
+	return min;		
+}
+//Return the position the-k of value within the array
+//Return -1 in case find not found.
+int getPos(int a[], int n, int value, int theK){
+	int i, count=0, pos=-1;
+	for (i=0; i<n; i++)
+		if (a[i]==value){
+			count++;
+			if (count==theK){
+				pos=i; break;
+			}
+		}	
+	if (count!=theK) return -1;
+	return pos;		
+}
+
+void sortInRangeAsc(int a[], int n, int pos1, int pos2){
+	int i,j;
+	for (i=pos1; i<pos2; i++)
+		for (j=pos2; j>i; j--)
+			if (a[j]<a[j-1]){
+				int tg = a[j]; a[j]=a[j-1]; a[j-1]=tg;
+			}
+}
 int main(){
 	int n = 12;
 	int arr[]={5,6,9,4,8,3,1,9,7,5,1,3};
@@ -67,11 +104,20 @@ int main(){
 //	bubbleSortDesc(arr,n);	
 //	display(arr,n);
 	int x, rs;
-	printf("Input x to count: "); scanf("%d", &x);
-	rs = countFrequency(arr, n, x);
-	if (rs==0)
-		printf("Find not found %d in the array", x);
-	else
-		printf("The number appearances of %d in the array is %d times", x, rs);	
+//	printf("Input x to count: "); scanf("%d", &x);
+//	rs = countFrequency(arr, n, x);
+//	if (rs==0)
+//		printf("Find not found %d in the array", x);
+//	else
+//		printf("The number appearances of %d in the array is %d times", x, rs);	
+	int theK1, theK2, pos_Max, pos_Min;
+	printf("Input maximum the-K: "); scanf("%d", &theK1);
+	printf("Input minimum the-K: "); scanf("%d", &theK2);
+	pos_Max=getPos(arr, n, getMax(arr, n),theK1);	
+	pos_Min=getPos(arr, n, getMin(arr, n),theK2);
+	printf("\nThe max the-%d is %d; the min the-%d is %d", theK1, pos_Max, theK2, pos_Min);	
+	sortInRangeAsc(arr, n, pos_Max, pos_Min);
+	printf("\n");
+	display(arr, n);
 	return 0;
 }
